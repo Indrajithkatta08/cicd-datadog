@@ -2,7 +2,7 @@ const fs = require('fs');
 const axios = require('axios');
 
 // Path to results produced by Newman
-const resultsPath = "E:/newman/newman-dd/results.json";
+const resultsPath = "results.json";
 
 // Read newman results JSON file
 let data;
