@@ -1,0 +1,29 @@
+name: Send Newman Report to Datadog
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # Install dependencies (uses your package.json)
+      - name: Install dependencies
+        run: npm install
+
+      # Send results.json to Datadog using your script
+      - name: Send Newman Report to Datadog
+        env:
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+        run: node send-to-datadog.js
