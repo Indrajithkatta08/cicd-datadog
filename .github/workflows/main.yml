@@ -20,11 +20,12 @@ jobs:
       - name: Run Hoppscotch Tests
         continue-on-error: true
         run: |
-          ls -R .
           hopp test postman_collection.json \
             --env postman_environment.json \
-            --reporter=json \
-            --reporter-json-export results.json
+            --reporter-junit-export results.xml
+
+      - name: Install Dependencies
+        run: npm install xml2js axios
 
       - name: Send Report to Datadog
         env:
