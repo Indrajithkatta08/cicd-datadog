@@ -1,10 +1,10 @@
 const fs = require('fs');
 const axios = require('axios');
 
-// Path to results produced by Newman
+// Path to results produced by Hoppscotch
 const resultsPath = "results.json";
 
-// Read newman results JSON file
+// Read results JSON
 let data;
 try {
   data = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
@@ -13,7 +13,7 @@ try {
   process.exit(1);
 }
 
-// Get API key from environment variable
+// Get API key from environment
 const apiKey = process.env.DD_API_KEY;
 
 if (!apiKey) {
@@ -21,18 +21,16 @@ if (!apiKey) {
   process.exit(1);
 }
 
-// Use US5 logs endpoint
+// US5 Datadog Logs endpoint
 const DATADOG_URL = "https://http-intake.logs.us5.datadoghq.com/api/v2/logs";
 
 axios.post(
   DATADOG_URL,
   [
     {
-      ddsource: "newman",
-      service: "postman-api-tests",
-      message: "Newman Test Results",
-      // include a small summary and the full payload as a field
-      // to avoid extremely large single log entries you can slice or summarize if needed
+      ddsource: "hoppscotch",
+      service: "api-tests",
+      message: "Hoppscotch Test Results",
       results: data
     }
   ],
