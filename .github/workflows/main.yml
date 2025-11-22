@@ -3,6 +3,7 @@ name: Run Newman Tests and Send Results to Datadog
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   run-tests:
@@ -13,7 +14,8 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Newman
-        run: npm install -g newman newman-reporter-json
+        run: |
+          npm install -g newman newman-reporter-json
 
       - name: Run Newman Collection
         run: |
