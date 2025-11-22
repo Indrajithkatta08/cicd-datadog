@@ -23,8 +23,8 @@ jobs:
           ls -R .
           hopp test postman_collection.json \
             --env postman_environment.json \
-            --reporter=junit \
-            --reporter-junit-export results.xml
+            --reporter=json \
+            --reporter-json-export results.json
 
       - name: Send Report to Datadog
         env:
