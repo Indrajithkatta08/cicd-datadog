@@ -1,35 +1,39 @@
 const fs = require('fs');
 const axios = require('axios');
 
-const resultsPath = "results.txt";
+// Path to results produced by Newman
+const resultsPath = "results.json";
 
-// Read the captured Hoppscotch output (TEXT)
+// Read newman results JSON file
 let data;
 try {
-  data = fs.readFileSync(resultsPath, "utf8");
+  data = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
 } catch (err) {
-  console.error("ERROR: Failed reading results.txt:", err.message);
+  console.error("ERROR: Failed reading results.json:", err.message);
   process.exit(1);
 }
 
-// Get Datadog API key
+// Get API key from environment variable
 const apiKey = process.env.DD_API_KEY;
 
 if (!apiKey) {
-  console.error("ERROR: Datadog API key missing.");
+  console.error("ERROR: Datadog API key missing. Set DD_API_KEY first.");
   process.exit(1);
 }
 
+// Use US5 logs endpoint
 const DATADOG_URL = "https://http-intake.logs.us5.datadoghq.com/api/v2/logs";
 
 axios.post(
   DATADOG_URL,
   [
     {
-      ddsource: "hoppscotch",
-      service: "api-tests-hoppscotch",
-      message: "Hoppscotch Test Results",
-      test_output: data  // <-- plain text
+      ddsource: "newman",
+      service: "postman-api-tests",
+      message: "Newman Test Results",
+      // include a small summary and the full payload as a field
+      // to avoid extremely large single log entries you can slice or summarize if needed
+      results: data
     }
   ],
   {
@@ -42,5 +46,5 @@ axios.post(
 )
 .then(() => console.log("Logs sent successfully to Datadog!"))
 .catch(err => {
-  console.error("Error sending to Datadog:", err.response?.data || err.message);
+  console.error("Error sending to Datadog:", err.response?.data || err.message || err);
 });
