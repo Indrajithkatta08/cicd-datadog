@@ -1,0 +1,592 @@
+{
+	"info": {
+		"_postman_id": "c629e046-5d4a-47b9-a158-85e8fb6e370a",
+		"name": "newman-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33420650"
+	},
+	"item": [
+		{
+			"name": "user-page2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set environment variables dynamically\r",
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"// Log to Postman Console\r",
+							"console.log(\"Host:\", pm.environment.get(\"host\"));\r",
+							"console.log(\"Base Path:\", pm.environment.get(\"basepath\"));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Basic test: Status Code\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validate response is JSON\r",
+							"pm.test(\"Response is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"let json = pm.response.json();\r",
+							"\r",
+							"// Check 'page' key exists\r",
+							"pm.test(\"Response contains page field\", function () {\r",
+							"    pm.expect(json).to.have.property(\"page\");\r",
+							"});\r",
+							"\r",
+							"// Validate 'data' array exists\r",
+							"pm.test(\"Data array exists\", function () {\r",
+							"    pm.expect(json).to.have.property(\"data\");\r",
+							"    pm.expect(json.data).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Log first user email (if available)\r",
+							"if (json.data && json.data.length > 0) {\r",
+							"    console.log(\"First user email:\", json.data[0].email);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/users?page=2",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Set environment variables dynamically\r",
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"// Log to Postman Console\r",
+							"console.log(\"Host:\", pm.environment.get(\"host\"));\r",
+							"console.log(\"Base Path:\", pm.environment.get(\"basepath\"));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Basic test: Status Code\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validate response is JSON\r",
+							"pm.test(\"Response is JSON\", function () {\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"// Parse the response JSON\r",
+							"let json = pm.response.json();\r",
+							"\r",
+							"// Check 'page' key exists\r",
+							"pm.test(\"Response contains page field\", function () {\r",
+							"    pm.expect(json).to.have.property(\"page\");\r",
+							"});\r",
+							"\r",
+							"// Validate 'data' array exists\r",
+							"pm.test(\"Data array exists\", function () {\r",
+							"    pm.expect(json).to.have.property(\"data\");\r",
+							"    pm.expect(json.data).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Log first user email (if available)\r",
+							"if (json.data && json.data.length > 0) {\r",
+							"    console.log(\"First user email:\", json.data[0].email);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/users?page=2",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unknown-user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Automatically set the host and base path\r",
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"// Log what will be called\r",
+							"console.log(\"Calling:\", `https://${pm.environment.get(\"host\")}/${pm.environment.get(\"basepath\")}/unknown`);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"// -------------------\r",
+							"// ✔ Positive Test Cases\r",
+							"// -------------------\r",
+							"\r",
+							"// Test 1: Status 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Response must contain page info\r",
+							"pm.test(\"Page information is present\", function () {\r",
+							"    pm.expect(json).to.have.property(\"page\");\r",
+							"    pm.expect(json).to.have.property(\"total\");\r",
+							"    pm.expect(json).to.have.property(\"total_pages\");\r",
+							"});\r",
+							"\r",
+							"// Test 3: Data array exists\r",
+							"pm.test(\"Data array is present\", function () {\r",
+							"    pm.expect(json.data).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Validate first object structure\r",
+							"pm.test(\"First data element contains expected keys\", function () {\r",
+							"    let item = json.data[0];\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"    pm.expect(item).to.have.property(\"name\");\r",
+							"    pm.expect(item).to.have.property(\"year\");\r",
+							"    pm.expect(item).to.have.property(\"color\");\r",
+							"    pm.expect(item).to.have.property(\"pantone_value\");\r",
+							"});\r",
+							"\r",
+							"// Console log some values\r",
+							"if (json.data.length > 0) {\r",
+							"    console.log(\"First Color Name:\", json.data[0].name);\r",
+							"    console.log(\"Total Items:\", json.data.length);\r",
+							"}\r",
+							"\r",
+							"\r",
+							"// -------------------\r",
+							"// ❌ Negative Test Cases (Intentional Fails to validate your Newman/Postman report)\r",
+							"// -------------------\r",
+							"\r",
+							"// Fail Case 1: Check wrong key (should not exist)\r",
+							"pm.test(\"Fail Case: Invalid key does NOT exist\", function () {\r",
+							"    pm.expect(json).to.not.have.property(\"invalid_key\");\r",
+							"});\r",
+							"\r",
+							"// Fail Case 2: Assert data array is empty (which is false)\r",
+							"pm.test(\"Fail Case: Data array is empty (Expected fail)\", function () {\r",
+							"    pm.expect(json.data.length).to.eql(0);  // this will fail\r",
+							"});\r",
+							"\r",
+							"// Fail Case 3: Checking incorrect support message\r",
+							"pm.test(\"Fail Case: Wrong support text (Expected fail)\", function () {\r",
+							"    pm.expect(json.support.text).to.eql(\"Sample Wrong Text\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/unknown",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"// Log URL being called\r",
+							"console.log(\"Calling:\", `https://${pm.environment.get(\"host\")}/${pm.environment.get(\"basepath\")}/users`);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"// -----------------------\r",
+							"// ✔ SUCCESS TEST CASES\r",
+							"// -----------------------\r",
+							"\r",
+							"// Test 1: Status code check\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Page information validation\r",
+							"pm.test(\"Page information is correct\", function () {\r",
+							"    pm.expect(json).to.have.property(\"page\");\r",
+							"    pm.expect(json).to.have.property(\"per_page\");\r",
+							"    pm.expect(json).to.have.property(\"total\");\r",
+							"    pm.expect(json).to.have.property(\"total_pages\");\r",
+							"});\r",
+							"\r",
+							"// Test 3: Data array exists and is an array\r",
+							"pm.test(\"Data array exists\", function () {\r",
+							"    pm.expect(json.data).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Ensure 6 users are returned\r",
+							"pm.test(\"6 users are returned\", function () {\r",
+							"    pm.expect(json.data.length).to.eql(6);\r",
+							"});\r",
+							"\r",
+							"// Test 5: Validate fields of first user\r",
+							"pm.test(\"First user contains expected fields\", function () {\r",
+							"    let user = json.data[0];\r",
+							"    pm.expect(user).to.have.property(\"id\");\r",
+							"    pm.expect(user).to.have.property(\"email\");\r",
+							"    pm.expect(user).to.have.property(\"first_name\");\r",
+							"    pm.expect(user).to.have.property(\"last_name\");\r",
+							"    pm.expect(user).to.have.property(\"avatar\");\r",
+							"});\r",
+							"\r",
+							"// Console logs\r",
+							"console.log(\"Total Users:\", json.data.length);\r",
+							"console.log(\"First User Email:\", json.data[0]?.email);\r",
+							"\r",
+							"\r",
+							"// -----------------------\r",
+							"// ❌ INTENTIONAL FAILURE CASES\r",
+							"// -----------------------\r",
+							"\r",
+							"// Fail 1: Wrong total count (expected fail)\r",
+							"pm.test(\"Fail Case: Total users is 10 (Expected fail)\", function () {\r",
+							"    pm.expect(json.total).to.eql(10);\r",
+							"});\r",
+							"\r",
+							"// Fail 2: Data array is empty (expected fail)\r",
+							"pm.test(\"Fail Case: Data array is empty (Expected fail)\", function () {\r",
+							"    pm.expect(json.data.length).to.eql(0);\r",
+							"});\r",
+							"\r",
+							"// Fail 3: Metadata missing (expected fail)\r",
+							"pm.test(\"Fail Case: _meta block is missing (Expected fail)\", function () {\r",
+							"    pm.expect(json).to.not.have.property(\"_meta\");\r",
+							"});\r",
+							"\r",
+							"// Fail 4: Incorrect support text (expected fail)\r",
+							"pm.test(\"Fail Case: Support text is incorrect (Expected fail)\", function () {\r",
+							"    pm.expect(json.support.text).to.eql(\"Wrong support text here\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/users",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users-2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"console.log(\"Calling:\", `https://${pm.environment.get(\"host\")}/${pm.environment.get(\"basepath\")}/users/2`);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"// -----------------------\r",
+							"// ✔ SUCCESS TEST CASES\r",
+							"// -----------------------\r",
+							"\r",
+							"// Test 1: Status Code\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Response contains 'data' object\r",
+							"pm.test(\"Data object exists\", function () {\r",
+							"    pm.expect(json).to.have.property(\"data\");\r",
+							"    pm.expect(json.data).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Test 3: Validate all required user fields\r",
+							"pm.test(\"User object contains expected fields\", function () {\r",
+							"    let user = json.data;\r",
+							"    pm.expect(user).to.have.property(\"id\");\r",
+							"    pm.expect(user).to.have.property(\"email\");\r",
+							"    pm.expect(user).to.have.property(\"first_name\");\r",
+							"    pm.expect(user).to.have.property(\"last_name\");\r",
+							"    pm.expect(user).to.have.property(\"avatar\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Validate specific user details (Janet)\r",
+							"pm.test(\"User ID matches the requested user\", function () {\r",
+							"    pm.expect(json.data.id).to.eql(2);\r",
+							"});\r",
+							"\r",
+							"// Test 5: Support block exists\r",
+							"pm.test(\"Support information is present\", function () {\r",
+							"    pm.expect(json).to.have.property(\"support\");\r",
+							"    pm.expect(json.support).to.have.property(\"url\");\r",
+							"    pm.expect(json.support).to.have.property(\"text\");\r",
+							"});\r",
+							"\r",
+							"// Test 6: _meta information exists\r",
+							"pm.test(\"Meta information exists\", function () {\r",
+							"    pm.expect(json).to.have.property(\"_meta\");\r",
+							"});\r",
+							"\r",
+							"// Console logs\r",
+							"console.log(\"User Email:\", json.data.email);\r",
+							"console.log(\"User First Name:\", json.data.first_name);\r",
+							"\r",
+							"\r",
+							"// -----------------------\r",
+							"// ❌ INTENTIONAL FAILURE TESTS\r",
+							"// -----------------------\r",
+							"\r",
+							"// Fail 1: Wrong ID check\r",
+							"pm.test(\"Fail Case: User ID equals 10 (Expected fail)\", function () {\r",
+							"    pm.expect(json.data.id).to.eql(10);\r",
+							"});\r",
+							"\r",
+							"// Fail 2: Email mismatch (expected fail)\r",
+							"pm.test(\"Fail Case: Email is wrong (Expected fail)\", function () {\r",
+							"    pm.expect(json.data.emai\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/users/2",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "unknown-2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"host\", \"reqres.in\");\r",
+							"pm.environment.set(\"basepath\", \"api\");\r",
+							"\r",
+							"console.log(\"Calling:\", `https://${pm.environment.get(\"host\")}/${pm.environment.get(\"basepath\")}/unknown/2`);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let json = pm.response.json();\r",
+							"\r",
+							"// -----------------------\r",
+							"// ✔ SUCCESS TEST CASES\r",
+							"// -----------------------\r",
+							"\r",
+							"// Test 1: Status should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Response contains 'data' object\r",
+							"pm.test(\"Data object exists\", function () {\r",
+							"    pm.expect(json).to.have.property(\"data\");\r",
+							"    pm.expect(json.data).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Test 3: Validate required fields in data object\r",
+							"pm.test(\"Data contains expected fields\", function () {\r",
+							"    let item = json.data;\r",
+							"    pm.expect(item).to.have.property(\"id\");\r",
+							"    pm.expect(item).to.have.property(\"name\");\r",
+							"    pm.expect(item).to.have.property(\"year\");\r",
+							"    pm.expect(item).to.have.property(\"color\");\r",
+							"    pm.expect(item).to.have.property(\"pantone_value\");\r",
+							"});\r",
+							"\r",
+							"// Test 4: Validate actual values for ID = 2\r",
+							"pm.test(\"Correct ID is returned\", function () {\r",
+							"    pm.expect(json.data.id).to.eql(2);\r",
+							"});\r",
+							"\r",
+							"// Test 5: Support section exists\r",
+							"pm.test(\"Support section is present\", function () {\r",
+							"    pm.expect(json).to.have.property(\"support\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{host}}/{{basepath}}/unknown/2",
+					"protocol": "https",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"{{basepath}}",
+						"unknown",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
