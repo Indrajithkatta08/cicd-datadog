@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Install Hoppscotch CLI
-        run: npm install -g @hoppscotch/cli
+        run: npm install -g hopp-cli
 
       - name: Run Hoppscotch Tests
         continue-on-error: true
         run: |
-          hopp test hoppscotch_collection.json \
-            --env hoppscotch_environment.json \
-            --json > results.json
+          hopp test hoppscotch_collection.json > results.txt
+          echo "Exit code: $?" >> results.txt
+          ls -l
 
       - name: Send Report to Datadog
         env:
