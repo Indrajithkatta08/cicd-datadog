@@ -1,29 +1,31 @@
-name: Send Newman Report to Datadog
+name: Run Newman and Send to Datadog
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: [ main ]
 
 jobs:
-  send-report:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-json
 
-      # Install dependencies (uses your package.json)
-      - name: Install dependencies
+      - name: Run Newman tests
+        run: |
+          newman run postman_collection.json \
+           -e postman_environment.json \
+           -r json \
+           --reporter-json-export results.json
+
+      - name: Install Node dependencies
         run: npm install
 
-      # Send results.json to Datadog using your script
-      - name: Send Newman Report to Datadog
+      - name: Send logs to Datadog
         env:
-          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          DD_API_KEY: ${{ secrets.DATADOG_API_KEY }}   
         run: node send-to-datadog.js
