@@ -1,19 +1,30 @@
 const fs = require('fs');
 const axios = require('axios');
+const xml2js = require('xml2js');
 
-// Path to results produced by Hoppscotch
-const resultsPath = "results.json";
+// Path to Hoppscotch results
+const resultsPath = "results.xml";
 
-// Read results JSON
-let data;
+// Read XML
+let xml;
 try {
-  data = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
+  xml = fs.readFileSync(resultsPath, "utf8");
 } catch (err) {
-  console.error("ERROR: Failed reading results.json:", err.message);
+  console.error("ERROR: Failed reading results.xml:", err.message);
   process.exit(1);
 }
 
-// Get API key from environment
+// Convert XML → JSON
+let data;
+xml2js.parseString(xml, { explicitArray: false }, (err, result) => {
+  if (err) {
+    console.error("ERROR: Failed parsing XML:", err.message);
+    process.exit(1);
+  }
+  data = result;
+});
+
+// Get Datadog API key
 const apiKey = process.env.DD_API_KEY;
 
 if (!apiKey) {
@@ -21,9 +32,9 @@ if (!apiKey) {
   process.exit(1);
 }
 
-// US5 Datadog Logs endpoint
 const DATADOG_URL = "https://http-intake.logs.us5.datadoghq.com/api/v2/logs";
 
+// Send to Datadog
 axios.post(
   DATADOG_URL,
   [
@@ -38,8 +49,7 @@ axios.post(
     headers: {
       "Content-Type": "application/json",
       "DD-API-KEY": apiKey
-    },
-    timeout: 15000
+    }
   }
 )
 .then(() => console.log("Logs sent successfully to Datadog!"))
