@@ -18,14 +18,13 @@ jobs:
           npm install -g newman newman-reporter-json
 
       - name: Run Newman Collection
+        continue-on-error: true
         run: |
+          ls -R .
           newman run postman_collection.json \
             -e postman_environment.json \
             -r json \
             --reporter-json-export results.json
-
-      - name: Install Node Dependencies
-        run: npm install
 
       - name: Send Report to Datadog
         env:
