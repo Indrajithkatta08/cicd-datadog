@@ -19,8 +19,8 @@ jobs:
 
       - name: Run Newman Collection
         run: |
-          newman run newman-test.postman_collection.json \
-            -e newman-test.postman_environment.json \
+          newman run postman_collection.json \
+            -e postman_environment.json \
             -r json \
             --reporter-json-export results.json
 
