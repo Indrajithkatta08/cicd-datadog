@@ -1,4 +1,4 @@
-name: Run Hoppscotch Tests and Send Results to Datadog
+name: Run Newman Tests and Send Results to Datadog
 
 on:
   push:
@@ -13,19 +13,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Hoppscotch CLI
+      - name: Install Newman
         run: |
-          npm install -g @hoppscotch/cli
+          npm install -g newman newman-reporter-json
 
-      - name: Run Hoppscotch Tests
+      - name: Run Newman Collection
         continue-on-error: true
         run: |
-          hopp test postman_collection.json \
-            --env postman_environment.json \
-            --reporter-junit-export results.xml
-
-      - name: Install Dependencies
-        run: npm install xml2js axios
+          newman run postman_collection.json \
+            -e postman_environment.json \
+            -r json \
+            --reporter-json-export results.json
 
       - name: Send Report to Datadog
         env:
